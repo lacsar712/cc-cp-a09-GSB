@@ -23,6 +23,29 @@ CREATE TABLE IF NOT EXISTS probe_readings (
     processed_at timestamptz
 );
 CREATE INDEX IF NOT EXISTS idx_probe_readings_status ON probe_readings (status, id);
+
+-- 天气关闸：全表只允许一行（id = 1），closed 为前后端共用的唯一开关态
+CREATE TABLE IF NOT EXISTS weather_gate (
+    id smallint PRIMARY KEY DEFAULT 1,
+    closed boolean NOT NULL DEFAULT false,
+    reason text NOT NULL DEFAULT '',
+    updated_by text NOT NULL DEFAULT '',
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT weather_gate_singleton CHECK (id = 1)
+);
+INSERT INTO weather_gate (id, closed, reason, updated_by, updated_at)
+VALUES (1, false, '', '', now())
+ON CONFLICT (id) DO NOTHING;
+
+-- 关闸流水：close 关闸 / open 开闸 / reject 关闸期间挡回提交（与写口同事务）
+CREATE TABLE IF NOT EXISTS weather_gate_log (
+    id serial PRIMARY KEY,
+    action text NOT NULL,
+    actor text NOT NULL,
+    detail text NOT NULL DEFAULT '',
+    created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_weather_gate_log_id ON weather_gate_log (id);
 """
 
 
