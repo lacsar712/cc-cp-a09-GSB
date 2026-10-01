@@ -133,4 +133,102 @@ td {
 .user {
   font-size: 0.875rem;
   color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.nav {
+  color: #0369a1;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.nav:hover {
+  text-decoration: underline;
+}
+
+.nav.active {
+  font-weight: 600;
+}
+
+.lamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lamp::before {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.lamp.on {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.lamp.off {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.gate-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 0.9rem;
+}
+
+.gate-banner.closed {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+.gate-banner.open {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.dot {
+  flex: none;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+}
+
+.dot.red {
+  background: #dc2626;
+}
+
+.dot.green {
+  background: #16a34a;
+}
+
+.switch-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+button.danger {
+  background: #b91c1c;
+}
+
+button.danger:disabled {
+  opacity: 0.55;
 }

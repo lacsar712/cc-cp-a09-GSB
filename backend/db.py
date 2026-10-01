@@ -23,6 +23,28 @@ CREATE TABLE IF NOT EXISTS probe_readings (
     processed_at timestamptz
 );
 CREATE INDEX IF NOT EXISTS idx_probe_readings_status ON probe_readings (status, id);
+
+CREATE TABLE IF NOT EXISTS weather_gate_state (
+    id integer PRIMARY KEY DEFAULT 1,
+    closed boolean NOT NULL DEFAULT false,
+    updated_by text,
+    updated_at timestamptz NOT NULL DEFAULT now(),
+    CONSTRAINT weather_gate_state_singleton CHECK (id = 1)
+);
+INSERT INTO weather_gate_state (id, closed) VALUES (1, false)
+ON CONFLICT (id) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS weather_gate_log (
+    id serial PRIMARY KEY,
+    action text NOT NULL,
+    closed boolean NOT NULL,
+    operator text NOT NULL,
+    probe_id text,
+    temp_c double precision,
+    detail text,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_weather_gate_log_id ON weather_gate_log (id DESC);
 """
 
 
